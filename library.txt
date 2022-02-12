@@ -1,0 +1,88 @@
+library_express
+###############################
+1. สร้าง โฟลเดอร์เปล่า 1 โฟลเดอร์
+2. สร้าง pangkage.json 
+	- npm init -y
+3. สร้างโฟลเดอร์ src
+ไฟล์	- models
+	- controllers
+	- routes
+4.นอก src สร้างไฟล์
+	-db.js
+	-index.js
+5. คำสั่ง npm install
+6.สร้างโฟลเดอร์ config.env
+7. ติดตั้ง package บน terminal
+	- npm install express nodemon body-parser cors dotenv mongoose bcrypt jsonwebtoken mongoose-unique-validator
+8. เชื่อมต่อ database ใน config.env
+	ATLAS_URI=mongodb+srv://admin:admin123456@bcit-pantirar.na92k.mongodb.net/test
+	PORT=4000
+	HOSTNAME=localhost
+9. เชื่อม db.js
+	require('dotenv').config({ path: './config.env' });
+const mongoose = require("mongoose");
+module.exports = function (app) {
+    mongoose.connect(process.env.ATLAS_URI, {       //อ่านค่า ATLAS_URI ใน config.env
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+        // put your db name
+        dbName: "library_express"  <== ชื่อDatabaseของตนเอง
+    }).then(connection => console.log("Application is connected to db")).catch(err => console.log(err))
+    mongoose.Promise = global.Promise;
+    process.on("SIGINT", cleanup);
+    process.on("SIGTERM", cleanup);
+    process.on("SIGHUP", cleanup);
+    if (app) {
+        app.set("mongoose", mongoose);
+    }
+};
+function cleanup() {
+    mongoose.connection.close(function () {
+        process.exit(0);
+    });
+}
+10 หน้า index.js
+// ไปหยิบไฟล์ config.env ที่เก็บ URI PORT และ HOSTNAME
+require('dotenv').config({path:'./config.env'});
+// ตัวแปรที่เก็บmodules ของ express ไปใช้
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const port = process.env.PORT || 4001
+//จำเป็นมาก ต้องใส่
+const app = express();  
+app.use(cors());
+app.use(bodyParser.json());
+// ดึงค่า config ใน db.js มาใข้ในapp 
+require("./db")(app);
+// =======================================
+app.get("/",(req, res)=>{
+    res.send("Hello from index");
+});
+app.listen(port,()=>{
+    console.log("App is running on port" + port);
+});
+11. กรณี ต้องการใช้คำสั่ง npm start 
+	- ให้ทำการเพิ่ม "start": "nodemon src/index.js" ในหัวข้อ scripts ในไฟล์ package.json
+
+##############################################################################
+
+12. สร้างไฟล์ ในโฟลเดอร์ Models 
+**คำสั่งโค้ดดูได้ที่หน้า Models
+13. เริ่มที่  - Models
+	- Controllers ควบคุม
+14. สร้าง โฟลเดอร์ middleware ชื่อไฟล์ auth.js
+15. สร้างไฟล์ ในโฟลเดอร์ Routes 
+	- ที่จะทำเป็น path 
+
+
+
+
+ "staff_id" : "1001",
+    "name" : "Pantira R.",
+    "password" : "123456",
+    "address" : "Banglen",
+    "phone" : "091-87519-87"
+
+
+
