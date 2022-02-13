@@ -1,7 +1,7 @@
 const Staff = require('../models/staffModels');
 
 exports.getStaff = async (req, res) => {
-    Staff.find()      
+    Staff.find()
         .exec((err, result) => {
             res.status(200).json({
                 msg: "OK",
@@ -10,13 +10,13 @@ exports.getStaff = async (req, res) => {
         });
 };
 
-exports.addStaff = async(req , res)=>{
+exports.addStaff = async (req, res) => {
     try {
         let staff = new Staff({
-            staff_id:req.body.staff_id,
-            name:req.body.name,
-            address:req.body.address,
-            phoneNumber:req.body.phoneNumber,
+            staff_id: req.body.staff_id,
+            name: req.body.name,
+            address: req.body.address,
+            phoneNumber: req.body.phoneNumber,
 
         });
         //fields password in html hass password first
@@ -25,19 +25,19 @@ exports.addStaff = async(req , res)=>{
         let createStaff = await staff.save();
 
         res.status(200).json({
-            msg:"Add Staff OK",
+            msg: "Add Staff OK",
             data: createStaff
         });
     } catch (error) {
-        
+
         console.log(error);
         res.status(500).json({
-            error:error
+            error: error
         });
     }
 }
 
-exports.login = async (req,res) => {
+exports.login = async (req, res) => {
     const login = {
         staff_id: req.body.staff_id,
         password: req.body.password
@@ -86,7 +86,7 @@ exports.login = async (req,res) => {
     }
 }
 
-exports.updateStaff = async (req,res)=>{
+exports.updateStaff = async (req, res) => {
     // req.params.id = id ของ staff 
     // req.body = ข้อมูล staff ที่จะ update
     let staff = {
@@ -94,31 +94,47 @@ exports.updateStaff = async (req,res)=>{
         address: req.body.address,
         phoneNumber: req.body.phoneNumber
     };
-    Staff.findByIdAndUpdate(req.params.id,staff)
-    .exec((err,data)=>{
-        // findById อีกรอบเพื่อเอา data ใหม่
-        Staff.findById(req.params.id)
-        .exec((err,data)=>{
-            data.password = "";
-            res.status(200).json({
-                msg: "OK",
-                data: data
-            });
+    Staff.findByIdAndUpdate(req.params.id, staff)
+        .exec((err, data) => {
+            // findById อีกรอบเพื่อเอา data ใหม่
+            Staff.findById(req.params.id)
+                .exec((err, data) => {
+                    data.password = "";
+                    res.status(200).json({
+                        msg: "OK",
+                        data: data
+                    });
+                });
         });
-    });
 };
 
 exports.deletestaff = async (req, res) => {
-    Staff.findByIdAndDelete(req.params.id)      
-        .exec((err)=>{
-            if(err){
+    Staff.findByIdAndDelete(req.params.id)
+        .exec((err) => {
+            if (err) {
                 res.status(500).json({
                     msg: err
                 });
-            } else{
+            } else {
                 res.status(200).json({
                     msg: "Delete complete"
                 });
             }
+        });
+};
+
+exports.getstaffByName = async (req, res) => {
+    let staffName = req.params.name;
+    Staff.find({
+        name: {
+            $regex: new RegExp(staffName),
+            $options: 'i'
+        }
+    })
+        .exec((err, result) => {
+            res.status(200).json({
+                msg: "OK",
+                data: result
+            });
         });
 };

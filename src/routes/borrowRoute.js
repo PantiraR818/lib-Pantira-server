@@ -6,6 +6,8 @@ const borrowController = require("../controllers/borrowController");
 app.get("/member/:id", borrowController.getBorrowDataByMember);
 app.get("/book/:id", borrowController.getBorrowDataByBook);
 
+app.get("/", borrowController.getBorrow);
+
 app.post("/", borrowController.borrowBook);
 
 app.patch("/return/:id", borrowController.returnBook);

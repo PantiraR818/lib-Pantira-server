@@ -4,13 +4,17 @@ const staffController = require('../controllers/staffController');
 const auth = require('../middleware/auth');
 
 router.get("/", staffController.getStaff);
+router.get("/:name", staffController.getstaffByName);
+
 
 router.post("/addStaff",staffController.addStaff);
 router.post("/login",staffController.login);
 
 router.put("/:id",staffController.updateStaff);
+
 // router.put("/:id",auth,staffController.updateStaff);
 router.delete("/:id", staffController.deletestaff);
+
 module.exports = router;
 
 

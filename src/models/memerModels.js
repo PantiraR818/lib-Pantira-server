@@ -36,14 +36,8 @@ const memberSchema = new Schema({
     },
     // ประเภท
      type:{
-         name:{
-             type : String,
-             required:true
-         },
-         daycan_borrow :{
-             type : Number,
-             required:true
-         }
+        type : String,
+        required:true
      }
 },{
     timestamps:true

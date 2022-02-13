@@ -5,14 +5,15 @@ require('dotenv').config({path:'./config.env'});
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const port = process.env.PORT || 4001
+const port = process.env.PORT || 4002
 
 
 const staffRoute = require("./src/routes/staffRoute");
 const bookRoute = require("./src/routes/bookRoute");
 const borrowRoute = require("./src/routes/borrowRoute");
-const userRoute = require("./src/routes/userRoute");
-// const memberRoute = require("./src/routes/memberRoute");
+const memberRoute = require("./src/routes/memberRoute");
+
+
 
 //จำเป็นมาก ต้องใส่
 const app = express();  
@@ -26,9 +27,8 @@ require("./db")(app);
 
 app.use("/staff", staffRoute);
 app.use("/borrow", borrowRoute);
-// app.use("/member", memberRoute);
 app.use("/book", bookRoute);
-app.use("/user", userRoute);
+app.use("/member", memberRoute);
 
 app.get("/",(req, res)=>{
     res.send("Hello from library");

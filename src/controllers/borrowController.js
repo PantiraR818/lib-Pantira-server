@@ -1,5 +1,15 @@
 const Borrow = require("../models/borrowModels");
 
+exports.getBorrow = async (req, res) => {
+    Borrow.find()
+        .exec((err, result) => {
+            res.status(200).json({
+                msg: "OK",
+                data: result
+            });
+        });
+};
+
 exports.borrowBook = async(req, res) => {
     try {
         let borrow = new Borrow(req.body);

@@ -10,6 +10,32 @@ exports.getBook = async (req, res) => {
         });
 };
 
+exports.getBookById = async (req, res) => {
+    Book.findById(req.params.id)     //find product by id
+        .exec((err, result) => {
+            res.status(200).json({
+                msg: "OK",
+                data: result
+            });
+        });
+};  
+
+exports.getbookByName = async (req, res) => {
+    let bookName = req.params.title;
+    Book.find({     
+            title: {
+                $regex: new RegExp(bookName),
+                $options: 'i'
+            }
+        })
+        .exec((err, result) => {
+            res.status(200).json({
+                msg: "OK",
+                data: result
+            });
+        });
+};
+
 exports.addBook = async(req , res)=>{
     try {
         let book = new Book({
@@ -69,3 +95,5 @@ exports.addBook = async(req , res)=>{
             });
     };
     
+
+   
